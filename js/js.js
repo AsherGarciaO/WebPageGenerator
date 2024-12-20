@@ -5,7 +5,7 @@ let isIncreasing = {value: false, object: null};
 let position = {x: 0, y: 0};
 let side = {derecho: false, arriba: false, abajo: false, izquierdo: false};
 
-document.body.addEventListener('mouseup', ()=>{
+workSpace.addEventListener('mouseup', ()=>{
     isIncreasing.value = false;
     isIncreasing.object = null;
 
@@ -23,28 +23,7 @@ workSpace.addEventListener('mousedown', (e)=>{
 
 workSpace.addEventListener('mousemove', (e) => {
     let element = isIncreasing.object;
-    let margen = workSpace.getBoundingClientRect();
-    let x = e.clientX - margen.left - offsetX;
-    let y = e.clientY - margen.top - offsetY;
-
-    if(element != null){
-        const maxX = workSpace.clientWidth - element.offsetWidth;
-        if (x < 0) {
-            e.preventDefault();
-        }
-        else if (x > maxX) {
-            e.preventDefault();
-        }
-
-        const maxY = workSpace.clientHeight - element.offsetHeight;
-        if (y < 0) {
-            e.preventDefault();
-        } 
-        else if (y > maxY) {
-            e.preventDefault();
-        }
-    }
-
+    
     if(element !== null && element.classList.contains("selected") && isIncreasing.value){
         const rect = element.getBoundingClientRect();
 
@@ -53,7 +32,6 @@ workSpace.addEventListener('mousemove', (e) => {
 
             element.style.height = `${(parseInt(element.style.height.replace("px", "")))+(position.y-e.clientY)}px`;
             element.style.top = `${(parseInt(element.style.top.replace("px", "")))-(position.y-e.clientY)}px`;            
-            console.log("s");
         }
         else if(element.style.cursor == 'ns-resize' && side.abajo){
             enBordeInferior = rect.bottom - e.clientY <= bordeRango*10;
@@ -97,8 +75,8 @@ function addHTMLElement(item) {
 
     element.style.position = 'absolute';
     element.classList.add('generatedElement');
-    element.style.top = '50%';
-    element.style.left = '50%';
+    element.style.top = '100px';
+    element.style.left = '100px';
     element.style.width = '200px';
     element.style.height = '100px';
     element.setAttribute('draggable', 'true');
@@ -171,7 +149,6 @@ function addHTMLElement(item) {
     element.addEventListener('mousemove', (e) => {
         if (element.classList.contains("selected") && !isIncreasing.value) {
             const rect = element.getBoundingClientRect();
-
             const enBordeIzquierdo = e.clientX - rect.left <= bordeRango;
             const enBordeDerecho = rect.right - e.clientX <= bordeRango;
             const enBordeSuperior = e.clientY - rect.top <= bordeRango;
