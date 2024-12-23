@@ -1,4 +1,5 @@
 const workSpace = document.getElementById("workSpace");
+const optionsMenu = document.getElementById("optionsMenu");
 const sideBar = document.getElementById("leftBar");
 const navBarContainer = document.getElementById("navBarContainer");
 
@@ -16,14 +17,22 @@ document.addEventListener('keydown', (e)=> {
             el.style.height = `${parseInt(el.style.height.replace("px", ""))+6}px`;
             el.style.cursor = "default";
         });
+
+        optionsMenu.style.display = "none";
     }
-    else if(e.key === "Delete" && workSpace.querySelector(".selected") !== null){
+    else if(e.key === "Delete" && workSpace.querySelector(".selected") !== null && optionsMenu.style.display === "none"){
         workSpace.removeChild(workSpace.querySelector(".selected"));
         document.querySelectorAll(".selected").forEach((el) => {el.classList.remove("selected");});
     }
-    else if(e.key === "Backspace" && workSpace.querySelector(".selected") !== null){
+    else if(e.key === "Backspace" && workSpace.querySelector(".selected") !== null && optionsMenu.style.display === "none"){
         workSpace.removeChild(workSpace.querySelector(".selected"));
         document.querySelectorAll(".selected").forEach((el) => {el.classList.remove("selected");});
+    }
+});
+
+document.addEventListener('click', (e) => {
+    if (!optionsMenu.contains(e.target)) {
+        optionsMenu.style.display = "none";
     }
 });
 
@@ -101,7 +110,11 @@ function addHTMLElement(item) {
     let element = document.createElement(item);
 
     element.style.position = 'absolute';
-    element.classList.add('generatedElement');
+    element.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    element.style.color = "color";
+    element.style.display = "flex";
+    element.style.alignItems = "center";
+    element.style.justifyContent = "center";
     element.style.top = '100px';
     element.style.left = '100px';
     element.style.width = '200px';
@@ -125,6 +138,8 @@ function addHTMLElement(item) {
     });
 
     element.addEventListener('dragstart', (e) => {
+        optionsMenu.style.display = "none";
+
         if (element.style.cursor !== "ew-resize" && element.style.cursor !== "ns-resize") {
             if (!element.classList.contains("selected")) {
                 document.querySelectorAll(".selected").forEach((el) => { el.classList.remove("selected");});
@@ -181,15 +196,21 @@ function addHTMLElement(item) {
             const enBordeSuperior = e.clientY - rect.top <= bordeRango;
             const enBordeInferior = rect.bottom - e.clientY <= bordeRango;
 
-            if (enBordeIzquierdo || enBordeDerecho) {
-                element.style.cursor = 'ew-resize';
-            } 
-            else if (enBordeSuperior || enBordeInferior) {
-                element.style.cursor = 'ns-resize';
-            } 
-            else {
-                element.style.cursor = 'move';
-            }
+
+            if(optionsMenu.style.display === "none"){                
+                if (enBordeIzquierdo || enBordeDerecho) {
+                    element.style.cursor = 'ew-resize';
+                } 
+                else if (enBordeSuperior || enBordeInferior) {
+                    element.style.cursor = 'ns-resize';
+                } 
+                else{
+                    element.style.cursor = 'move';
+                }
+            }    
+            else{
+                element.style.cursor = "default";
+            }        
         }
     });
 
@@ -206,6 +227,20 @@ function addHTMLElement(item) {
         side.izquierdo = enBordeIzquierdo;
         side.arriba = enBordeSuperior;
         side.abajo = enBordeInferior;
+    });
+
+    element.addEventListener('contextmenu', (e) => {
+        e.preventDefault();  
+             
+        document.querySelectorAll(".selected").forEach(el => {el.classList.remove("selected")});
+        element.classList.add("selected");
+
+        optionsMenu.style.display = "block";
+        optionsMenu.style.left = `${e.clientX-sideBar.getBoundingClientRect().width}px`;
+        optionsMenu.style.top = `${e.clientY-navBarContainer.getBoundingClientRect().height}px`; 
+
+        document.getElementById("textValue").value = element.textContent;
+
     });
 
     workSpace.appendChild(element);
