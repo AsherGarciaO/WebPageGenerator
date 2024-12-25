@@ -16,25 +16,60 @@
         <div id="main">
             <aside id="leftBar">
                 <div id="optionsContainer">
-                    <div class="elementContainer">
-                        <div class="titleOptions">
-                            <p class="normalTextOptions">Herramientas</p>
-                            <!--Imagen para desplegar y agregar evento para desplegar-->
+                    <div class="section">
+                        <div class="titleOptions" data-point="1" data-show="false">
+                            <p class="normalTextOptions">Elementos</p>
+                            <img src="./img/Show.png" alt="Show Tools" class="imgShow">
                         </div>
-                        <div class="options" onclick="addHTMLElement('div')">
-                            <div class="option">
-                                <p class="nameOption">Panel</p>
+                        <div class="elementsContainers" data-target="1">
+                            <div class="options" onclick="addHTMLElement('p')">
+                                <div class="option">
+                                    <img src="./img/elements/Text.png" alt="Texto">
+                                </div>
+                            </div>
+                            <div class="options" onclick="addHTMLElement('div')">
+                                <div class="option">
+                                    <img src="./img/elements/Div.png" alt="Panel">
+                                </div>
+                            </div>
+                            <div class="options" onclick="addHTMLElement('button')">
+                                <div class="option">
+                                    <img src="./img/elements/Button.png" alt="Botón">
+                                </div>
+                            </div>
+                            <div class="options" onclick="addHTMLElement('img')">
+                                <div class="option">
+                                    <img src="./img/elements/Image.png" alt="Imagen">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="elementContainer">
+                    <div style="clear: both;"></div>
+                    <div>
                         <div class="titleOptions">
-                            <p class="normalTextOptions">Herramientas</p>
-                            <!--Imagen para desplegar y agregar evento para desplegar-->
+                            <p class="normalTextOptions">Clases</p>
+                            <img src="./img/Show.png" alt="Show Tools" class="imgShow" data-point="2">
                         </div>
-                        <div class="options" onclick="addHTMLElement('button')">
-                            <div class="option">
-                                <p class="nameOption">Botón</p>
+                        <div class="elementsContainers" data-target="2">
+                            <div class="options" onclick="addHTMLElement('p')">
+                                <div class="option">
+                                    <img src="./img/elements/Text.png" alt="Texto">
+                                </div>
+                            </div>
+                            <div class="options" onclick="addHTMLElement('div')">
+                                <div class="option">
+                                    <img src="./img/elements/Div.png" alt="Panel">
+                                </div>
+                            </div>
+                            <div class="options" onclick="addHTMLElement('button')">
+                                <div class="option">
+                                    <img src="./img/elements/Button.png" alt="Botón">
+                                </div>
+                            </div>
+                            <div class="options" onclick="addHTMLElement('img')">
+                                <div class="option">
+                                    <img src="./img/elements/Image.png" alt="Imagen">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -42,7 +77,38 @@
             </aside>
             <main id="workSpace">    
                 <menu id="optionsMenu">
-                    <input type="text" placeholder="Contenido" id="textValue">
+                    <p id="textP">Texto:</p><input type="text" placeholder="Texto" id="textValue">
+                    <br>
+                    Opacidad: <input type="number" placeholder="Opacidad" id="opacidad" step="0.1" min="0" max="1">
+                    <br>
+                    Fondo: <input type="color" id="bgColor">
+                    Color Texto: <input type="color" id="textColor">
+                    <br><br>
+                    Tamaño de Fuente: <input type="number" placeholder="Tamaño de Fuente" id="fuenteTam" min="1" max="100">
+                    <br><br>
+                    Fuente:
+                    <select id="fuente">
+                        <option value="Arial">Arial</option>
+                        <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
+                        <option value="Gill Sans">Gill Sans</option>
+                        <option value="Lucida Sans">Lucida Sans</option>
+                    </select>
+                    <br><br>
+                    Alto: <input type="number" placeholder="Alto" id="alto" min="1" max="1000">
+                    <select id="altoOptions">
+                        <option value="px">px</option>
+                        <option value="vh">vh</option>
+                    </select>
+                    <br>
+                    Largo: <input type="number" placeholder="Largo" id="largo" min="1" max="1000">
+                    <select id="largoOptions">
+                        <option value="px">px</option>
+                        <option value="%">%</option>
+                        <option value="vw">vw</option>
+                    </select>
+                    <br><br><br>
+                    Clases:
+                    <select id="clases"></select>
                 </menu>
             </main>
         </div>

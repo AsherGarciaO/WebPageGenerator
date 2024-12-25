@@ -2,6 +2,7 @@ body{
     margin: 0px;
     padding: 0px;
     border: 0px solid black;
+    font-family: Arial;
 }
 
 main{
@@ -15,38 +16,69 @@ main{
 }
 
 .titleOptions{
-    align-items: center;
+    width: 100%;
+    float: left;
     border: 1px solid gray;
 }
 
 .normalTextOptions{
-    font-family: Arial;
     color: white;
     font-size: 1.5vw;
     margin: 5px;
     margin-left: 1.5vw;
     padding: 0px;
+    float: left;
 }
 
 .option{
-    font-family: Arial;
     color: white;
     margin: 0px;
     padding: 0px;
-    margin-left: 1.5vw;
     font-size: 1.5vw;
+}
+
+.option>img{
+    width: 5vw;
+    margin: 4px;
 }
 
 .options:hover{
     background-color: gray;
 }
 
+.elementsContainers{
+    display: none;
+    width: 100%;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
 .options{    
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
     border: 1px solid gray;
+    width: calc(97%/2);
+    float: left;
 }
 
 .selected{
     border: 3px solid black;
+}
+
+.section{
+    margin: 0px;
+    padding: 0px;
+}
+
+.imgShow{
+    width: 2vw;
+    margin: 0px;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0px;
+    float: right;
 }
 
 #navBar{
@@ -68,8 +100,7 @@ main{
 
 #optionsContainer{
     width: 100%;
-    display: block;
-    justify-content: center;
+    align-content: top;
 }
 
 #leftBar{
@@ -88,19 +119,42 @@ main{
     position: absolute;
     margin: 0px;
     padding: 0px;
-    width: 200px;
-    height: 300px;
+    width: 250px;
+    height: 400px;
     background-color: black;
     border-radius: 5px;
     z-index: 900;
+    text-align: center;
+    color: white;
+    font-size: 2vh;
 }
 
-#optionsMenu > input{
+#optionsMenu > input, #optionsMenu > select, #optionsMenu > option{
     border: 0px solid black;
     background-color: black;
-    margin: 10px;
     padding: 0px;
-    border-bottom: 2px solid white;
     z-index: 1000;
     color: white;
+}
+
+#optionsMenu > input[type="text"], #optionsMenu > input[type="password"], #optionsMenu > input[type="number"]{
+    margin: 6px;
+    border-bottom: 2px solid white;
+    height: 30px;
+}
+
+#optionsMenu > select, #optionsMenu > option{
+    margin-top: 5px;
+    border-bottom: 2px solid white;
+}
+
+#optionsMenu > input[type="color"]{
+    margin: 5px;
+}
+
+#textP{
+    padding-top: 5px;
+    padding-left: 20px;
+    font-size: 13px;
+    float: left;
 }
