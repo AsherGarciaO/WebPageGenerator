@@ -6,11 +6,12 @@
         <title>HTML Generator</title>
         <link rel="stylesheet" href="./css/styles.css">
         <link rel="shortcut icon" href="./img/Atex-iT-logo.png" type="image/x-icon">
+        <style id="estilos"></style>
     </head>
     <body>
         <div id="navBarContainer">
             <nav id="navBar">
-                <img id="atexlogo" src="./img/atexDirection.png" alt="Atex-iT-logo">
+                <img draggable="false" id="atexlogo" src="./img/atexDirection.png" alt="Atex-iT-logo">
             </nav>
         </div>
         <div id="main">
@@ -27,31 +28,39 @@
                                     <img src="./img/elements/Text.png" alt="Texto">
                                 </div>
                             </div>
-                            <div class="options" onclick="addHTMLElement('div')">
+                            <div class="options" onclick="addHTMLElement('div')" title="Panel (div)">
                                 <div class="option">
                                     <img src="./img/elements/Div.png" alt="Panel">
                                 </div>
                             </div>
-                            <div class="options" onclick="addHTMLElement('button')">
+                            <div class="options" onclick="addHTMLElement('button')" title="Botón (button)">
                                 <div class="option">
                                     <img src="./img/elements/Button.png" alt="Botón">
                                 </div>
                             </div>
-                            <div class="options" onclick="addHTMLElement('img')">
+                            <div class="options" onclick="addHTMLElement('img')" title="Imagen (img)">
                                 <div class="option">
                                     <img src="./img/elements/Image.png" alt="Imagen">
                                 </div>
                             </div>
+                            <div class="options" onclick="addHTMLElement('a')" title="Enlace (a)">
+                                <div class="option">
+                                    <img src="./img/elements/A.png" alt="Enlace">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div style="clear: both;"></div>
+                    <div class="clear"></div>
                     <div>
                         <div class="titleOptions" data-point="2" data-show="false">
                             <p class="normalTextOptions">Clases</p>
                             <img src="./img/Show.png" alt="Show Tools" class="imgShow">
                         </div>
-                        <div class="elementsContainers" data-target="2">
-                            
+                        <div class="elementsContainers" id="cssElementsList" data-target="2">
+                            <div id="allClasses"></div>
+                            <div style="text-align: center;">
+                                <input type="text" id="newClass" placeholder="Nueva Regla">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,13 +96,17 @@
                         <option value="%">%</option>
                         <option value="vw">vw</option>
                     </select>
-                    <br><br><br>
+                    <br><br>
+                    <img id="deleteElement" class="deletemenu" src="./img/Delete.png" alt="Borrar" title="Elimiar Elemento">
+                    <br><br>
                     Clases:
-                    <select id="clases"></select>
+                    <select id="clases">
+                        <option></option>
+                    </select>
                 </menu>
             </main>
         </div>
-
+        <script src="./js/styles.js"></script>
         <script src="./js/elements.js"></script>
         <script src="./js/js.js"></script>
         <script src="./js/menuOptions.js"></script>

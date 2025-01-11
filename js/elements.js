@@ -2,6 +2,23 @@ const workSpace = document.getElementById("workSpace");
 const optionsMenu = document.getElementById("optionsMenu");
 const sideBar = document.getElementById("leftBar");
 const navBarContainer = document.getElementById("navBarContainer");
+const estilosBase = {
+    top: '100px',
+    left: '100px',
+    width: '200px',
+    height: '100px',
+    margin: '0px',
+    padding: '0px',
+    position: 'absolute',
+    opacity: "1",
+    backgroundColor: "#333333",
+    color: "#000000",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "15px",
+    fontFamily: "Arial"
+};
 
 const bordeRango = 5;
 let offsetX = 0, offsetY = 0;
@@ -20,11 +37,11 @@ document.addEventListener('keydown', (e)=> {
 
         optionsMenu.style.display = "none";
     }
-    else if(e.key === "Delete" && workSpace.querySelector(".selected") !== null && optionsMenu.style.display === "none"){
+    else if(e.key === "Delete" && workSpace.querySelector(".selected") !== null && optionsMenu.style.display === "none" && document.activeElement === document.body){
         workSpace.removeChild(workSpace.querySelector(".selected"));
         document.querySelectorAll(".selected").forEach((el) => {el.classList.remove("selected");});
     }
-    else if(e.key === "Backspace" && workSpace.querySelector(".selected") !== null && optionsMenu.style.display === "none"){
+    else if(e.key === "Backspace" && workSpace.querySelector(".selected") !== null && optionsMenu.style.display === "none" && document.activeElement === document.body){
         workSpace.removeChild(workSpace.querySelector(".selected"));
         document.querySelectorAll(".selected").forEach((el) => {el.classList.remove("selected");});
     }
@@ -123,39 +140,49 @@ function addHTMLElement(item) {
     element.largo = {valor: "200", tipo: "px"};
     element.alto = {valor: "100", tipo: "px"};
 
-    element.style.top = '100px';
-    element.style.left = '100px';
-    element.style.width = '200px';
-    element.style.height = '100px';
-    element.style.margin = '0px';
-    element.style.padding = '0px';
-    element.style.position = 'absolute';
-    element.style.opacity = "1";
-    element.style.backgroundColor = "#333333";
-    element.style.color = "#000000";
-    element.style.display = "flex";
-    element.style.alignItems = "center";
-    element.style.justifyContent = "center";
-    element.style.fontSize = "15px";
-    element.style.fontFamily = "Arial";
+    element.style.top = estilosBase.top;
+    element.style.left = estilosBase.left;
+    element.style.width = estilosBase.width;
+    element.style.height = estilosBase.height;
+    element.style.margin = estilosBase.margin;
+    element.style.padding = estilosBase.padding;
+    element.style.position = estilosBase.position;
+    element.style.opacity = estilosBase.opacity;
+    element.style.backgroundColor = estilosBase.backgroundColor;
+    element.style.color = estilosBase.color;
+    element.style.display = estilosBase.display;
+    element.style.alignItems = estilosBase.alignItems;
+    element.style.justifyContent = estilosBase.justifyContent;
+    element.style.fontSize = estilosBase.fontSize;
+    element.style.fontFamily = estilosBase.fontFamily;
     element.setAttribute('draggable', 'true');
     
     if(item == "img"){
         element.src = "./../img/AtexLogo.jpg";
     }
+    else if(item == "a"){
+        element.href = "#";   
+        element.textContent = element.href;     
+        element.addEventListener('click', (e)=>{
+            e.preventDefault();
+        });
+        element.addEventListener('keydown', (e)=>{
+            e.preventDefault();
+        });
+    }
 
-    element.addEventListener('click', () => {
+    element.addEventListener('click', (e) => {
         document.querySelectorAll(".selected").forEach((el) => {
             el.classList.remove("selected");
             el.style.width = `${parseInt(el.style.width.replace("px", ""))+6}px`;
             el.style.height = `${parseInt(el.style.height.replace("px", ""))+6}px`;
             el.style.cursor = "default";
         });
+
         if(!element.classList.contains("selected")){            
             element.style.width = `${parseInt(element.style.width.replace("px", ""))-6}px`;
             element.style.height = `${parseInt(element.style.height.replace("px", ""))-6}px`;
         }
-
 
         if (!element.classList.contains("selected")) {
             element.classList.add("selected");
@@ -265,6 +292,24 @@ function addHTMLElement(item) {
 
     element.addEventListener('contextmenu', (e) => {
         e.preventDefault();  
+
+        let listaClases = document.getElementById("clases");
+        let styles = document.styleSheets[1];
+
+        listaClases.querySelectorAll("option").forEach(opt => {
+            listaClases.removeChild(opt);
+        });
+
+        listaClases.appendChild(document.createElement("option"));
+        for(let i = 0; i < styles.cssRules.length; i++){
+            let style = styleJsObject(styles.cssRules[i].cssText);
+            let optionClass = document.createElement("option");
+            console.log(style.name);
+            optionClass.textContent = style.name;
+            optionClass.value = style.name;
+
+            listaClases.appendChild(optionClass);
+        }
              
         document.querySelectorAll(".selected").forEach((el) => {
             el.classList.remove("selected");
@@ -296,13 +341,17 @@ function addHTMLElement(item) {
         }
         
         
-        document.getElementById("textP").textContent = ((item == "img")? "URL: ":"Texto: ");
-        document.getElementById("textValue").placeholder = ((item == "img")? "URL":"Texto");
-        if(item != "img"){
-            document.getElementById("textValue").value = element.textContent;
+        document.getElementById("textP").textContent = ((item == "img" || item == "a")? "URL: ":"Texto: ");
+        document.getElementById("textValue").placeholder = ((item == "img" || item == "a")? "URL":"Texto");
+        
+        if(item == "img"){
+            document.getElementById("textValue").value = element.src;
+        }
+        else if(item == "a"){        
+            document.getElementById("textValue").value = element.href;
         }
         else{
-            document.getElementById("textValue").src = element.src;
+            document.getElementById("textValue").value = element.textContent;
         }
 
         document.getElementById("bgColor").value = rgbToHex(element.style.backgroundColor);
@@ -323,6 +372,15 @@ function addHTMLElement(item) {
             option.selected = (option.value == element.largo.tipo);
         });
 
+        let claseSeleccionada = getClassSelected(element);
+        if(claseSeleccionada !== null){
+            document.getElementById("clases").querySelectorAll("*").forEach(option =>{
+                if(option.value === "."+getClassSelected(element)){
+                    option.selected = true;
+                }
+            });
+        }
+
         document.getElementById("largo").addEventListener('change', () => {
             const largo = document.getElementById('largo');
             const opts = document.getElementById('largoOptions');
@@ -338,7 +396,8 @@ function addHTMLElement(item) {
                     objeto.valor = `${100}`;
                 }
                 newSize = convertirPxPorcentaje(newSize, "largo");
-            } else if (opts.value == "px" && newSize > workSpace.getBoundingClientRect().width) {
+            } 
+            else if (opts.value == "px" && newSize > workSpace.getBoundingClientRect().width) {
                 newSize = workSpace.getBoundingClientRect().width;
                 largo.value = workSpace.getBoundingClientRect().width;
                 objeto.valor = `${workSpace.getBoundingClientRect().width}`;
@@ -522,4 +581,135 @@ function rgbToHex(rgbColor) {
     const rgbValues = rgbColor.match(/\d+/g).map(Number);
     const hex = rgbValues.map(value => value.toString(16).padStart(2, '0')).join('').toUpperCase();
     return `#${hex}`;
+}
+
+function getClassSelected(elemento){
+    if(elemento !== null){
+        let valores = elemento.classList;
+        for(let i = 0; i < valores.length; i++){
+            if(valores[i] !== "selected"){
+                return valores[i];
+            }
+        }
+    }
+
+    return null;
+}
+
+function deshabilitarStyle(element){
+    let styles = document.styleSheets[1];
+    for(let i = 0; i < styles.cssRules.length; i++){
+        let style = styleJsObject(styles.cssRules[i].cssText);
+        if(style.name === "."+getClassSelected(element) || style.name === "#"+getClassSelected(element)){
+            if (style.top !== undefined) {
+                element.style.removeProperty("top");
+            } 
+            else {
+                if(element.style.top === undefined){
+                    element.style.top = estilosBase.top;
+                } 
+            }
+            
+            if (style.left !== undefined) {
+                element.style.removeProperty("left");
+            } 
+            else{
+                if(element.style.left === undefined){
+                    element.style.left = estilosBase.left;
+                }                
+            }
+        
+            
+            if (style.width !== undefined) {
+                element.style.removeProperty("width");
+            } 
+            else {
+                element.style.width = estilosBase.width;
+            }
+            
+            if (style.height !== undefined) {
+                element.style.removeProperty("height");
+            } 
+            else {
+                element.style.height = estilosBase.height;
+            }
+            
+            if (style.margin !== undefined) {
+                element.style.removeProperty("margin");
+            } 
+            else {
+                element.style.margin = estilosBase.margin;
+            }
+            
+            if (style.padding !== undefined) {
+                element.style.removeProperty("padding");
+            } 
+            else {
+                element.style.padding = estilosBase.padding;
+            }
+            
+            if (style.position !== undefined) {
+                element.style.removeProperty("position");
+            } 
+            else {
+                element.style.position = estilosBase.position;
+            }
+            
+            if (style.opacity !== undefined) {
+                element.style.removeProperty("opacity");
+            } 
+            else {
+                element.style.opacity = estilosBase.opacity;
+            }
+            
+            if (style.backgroundColor !== undefined) {
+                element.style.removeProperty("background-color");
+            } 
+            else {
+                element.style.backgroundColor = estilosBase.backgroundColor;
+            }
+            
+            if (style.color !== undefined) {
+                element.style.removeProperty("color");
+            } 
+            else {
+                element.style.color = estilosBase.color;
+            }
+            
+            if (style.display !== undefined) {
+                element.style.removeProperty("display");
+            } 
+            else {
+                element.style.display = estilosBase.display;
+            }
+            
+            if (style.alignItems !== undefined) {
+                element.style.removeProperty("align-items");
+            } 
+            else {
+                element.style.alignItems = estilosBase.alignItems;
+            }
+            
+            if (style.justifyContent !== undefined) {
+                element.style.removeProperty("justify-content");
+            } 
+            else {
+                element.style.justifyContent = estilosBase.justifyContent;
+            }
+            
+            if (style.fontSize !== undefined) {
+                element.style.removeProperty("font-size");
+            } 
+            else {
+                element.style.fontSize = estilosBase.fontSize;
+            }
+            
+            if (style.fontFamily !== undefined) {
+                element.style.removeProperty("font-family");
+            } 
+            else {
+                element.style.fontFamily = estilosBase.fontFamily;
+            }            
+        }
+    }
 }

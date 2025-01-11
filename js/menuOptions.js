@@ -5,6 +5,7 @@ const opacity = document.getElementById("opacidad");
 const textColor = document.getElementById("textColor");
 const fuente = document.getElementById("fuente");
 const fuenteTam = document.getElementById("fuenteTam");
+const clases = document.getElementById("clases");
 
 textValue.addEventListener('keydown', ()=>{
     setTimeout(() => {
@@ -12,7 +13,13 @@ textValue.addEventListener('keydown', ()=>{
             document.querySelector(".selected").textContent = textValue.value;
         }
         else if(document.getElementById("textP").textContent == "URL: "){
-            document.querySelector(".selected").src = textValue.value;
+            if(document.querySelector(".selected").tagName === 'IMG'){
+                document.querySelector(".selected").src = textValue.value;
+            }
+            else if(document.querySelector(".selected").tagName === 'A'){
+                document.querySelector(".selected").href = textValue.value;
+                document.querySelector(".selected").textContent = textValue.value;
+            }
         }
     }, 1);
 });
@@ -99,4 +106,22 @@ fuenteTam.addEventListener('keydown', ()=>{
             fuenteTam.value = 15.0;
         }
     }, 1);
+});
+
+clases.addEventListener('change', ()=>{
+    let classes = document.querySelector(".selected").classList;
+
+    for(let i = 0; i < classes.length; i++){
+        if(classes[i] !== "selected"){
+            document.querySelector(".selected").classList.remove(classes[i]);
+        }
+    }
+
+    document.querySelector(".selected").classList.add(clases.value.replace(".", "").replace("#", ""));
+    deshabilitarStyle(document.querySelector(".selected"));
+});
+
+document.getElementById("deleteElement").addEventListener('click', ()=>{
+    workSpace.removeChild(document.querySelector(".selected"));
+    menu.style.display = "none";
 });
